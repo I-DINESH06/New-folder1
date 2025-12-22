@@ -1,0 +1,4 @@
+class Config:
+    SECRET_KEY = "quizmaster-secret-key"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///quizmaster.db"
+    SQLALCHEMY_TRACK_MODIFICATIONS = False

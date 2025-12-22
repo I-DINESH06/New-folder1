@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Master</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        /* 🔹 DESIGN UNCHANGED */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at top left, #0f2027, #203a43, #2c5364);
+            color: #ecf4f3;
+            overflow: hidden;
+        }
+
+        header {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        header a {
+            text-decoration: none;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .login-btn {
+            border: 1px solid rgba(0,255,255,0.6);
+            color: #aefeff;
+        }
+
+        .signup-btn {
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            color: #022c43;
+            font-weight: 600;
+        }
+
+        header a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,255,255,0.4);
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .hero span {
+            color: #00f2fe;
+            text-shadow: 0 0 20px rgba(0,242,254,0.6);
+        }
+
+        .hero p {
+            max-width: 620px;
+            font-size: 18px;
+            line-height: 1.8;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+
+        .cta {
+            display: flex;
+            gap: 25px;
+        }
+
+        .cta a {
+            text-decoration: none;
+            padding: 15px 42px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            color: #022c43;
+        }
+
+        .learn-btn {
+            border: 2px solid #00f2fe;
+            color: #aefeff;
+        }
+
+        .cta a:hover {
+            transform: scale(1.06);
+            box-shadow: 0 15px 35px rgba(0,255,255,0.45);
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.45;
+        }
+
+        .circle.one {
+            width: 320px;
+            height: 320px;
+            background: #00f2fe;
+            top: 10%;
+            left: 5%;
+        }
+
+        .circle.two {
+            width: 380px;
+            height: 380px;
+            background: #4facfe;
+            bottom: 10%;
+            right: 5%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="circle one"></div>
+<div class="circle two"></div>
+
+<header>
+    <!-- ✅ LINKS UPDATED -->
+    <a href="/login" class="login-btn">Login</a>
+    <a href="/signup" class="signup-btn">Sign Up</a>
+</header>
+
+<section class="hero">
+    <h1>Quiz <span>Master</span></h1>
+    <p>
+        Challenge your knowledge with smart quizzes, real-time progress
+        tracking, and a clean interactive experience.
+    </p>
+
+    <div class="cta">
+        <!-- ✅ LINK UPDATED -->
+        <a href="/login" class="start-btn">Get Started</a>
+        <a href="#" class="learn-btn">Learn More</a>
+    </div>
+</section>
+
+</body>
+</html>
