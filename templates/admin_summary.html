@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Summary</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+:root{
+    --bg-dark:#0F2A30;
+    --bg-mid:#1F3E46;
+    --card:#3E5A61;
+    --accent:#1FE1FF;
+    --text-main:#FFFFFF;
+}
+
+body{
+    background:linear-gradient(135deg,var(--bg-mid),var(--bg-dark));
+    color:var(--text-main);
+    font-family:Segoe UI;
+    padding:40px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+.chart-card{
+    background:var(--card);
+    padding:25px;
+    border-radius:18px;
+    text-align:center;
+}
+
+button{
+    margin-top:20px;
+    padding:10px 18px;
+    border-radius:10px;
+    border:none;
+    background:var(--accent);
+    font-weight:600;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Admin Summary</h2>
+
+    <div class="chart-card">
+        <canvas id="pie"></canvas>
+        <button onclick="location.href='/admin-dashboard'">⬅ Back</button>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Add Questions | Quiz Master</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#2F4F57,#1F3E46,#0F2A30);
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:40px;
+    color:#FFFFFF;
+}
+
+.container{
+    width:100%;
+    max-width:850px;
+    background:#3E5A61;
+    padding:35px;
+    border-radius:18px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.35);
+}
+
+h2{
+    text-align:center;
+    margin-bottom:25px;
+    color:#1FE1FF;
+}
+
+.question-card{
+    background:#2B474E;
+    padding:20px;
+    border-radius:14px;
+    margin-bottom:25px;
+}
+
+label{
+    display:block;
+    margin-top:12px;
+    margin-bottom:6px;
+    font-weight:600;
+    color:#FFFFFF;
+}
+
+input,select{
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:none;
+    outline:none;
+    font-size:14px;
+    background:#1F3E46;
+    color:#FFFFFF;
+}
+
+input::placeholder{
+    color:#9FB4BA;
+}
+
+.actions{
+    display:flex;
+    gap:15px;
+    margin-top:25px;
+}
+
+button{
+    padding:14px;
+    border-radius:28px;
+    border:none;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.2s ease;
+}
+
+.add-btn{
+    background:transparent;
+    border:2px dashed #1FE1FF;
+    color:#1FE1FF;
+}
+
+.submit-btn{
+    background:#1FE1FF;
+    color:#000;
+}
+
+.submit-btn:hover{
+    background:#00C4E3;
+}
+
+.ai-btn{
+    background:#1FE1FF;
+    color:#000;
+    margin-top:15px;
+}
+
+.ai-btn:hover{
+    background:#00C4E3;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Add Questions</h2>
+
+    <!-- 🔥 AI CONTROLS -->
+    <div class="question-card">
+        <label>Topic</label>
+        <input id="topic" placeholder="Eg: Python, Aptitude etc">
+
+        <label>Difficulty</label>
+        <select id="difficulty">
+            <option value="easy">easy</option>
+            <option value="medium">medium</option>
+            <option value="hard">hard</option>
+        </select>
+
+        <label>No. of Questions</label>
+        <input id="count" type="number" value="3" min="1" max="10">
+
+        <button type="button" class="ai-btn" onclick="generateAI()">
+            Generate with AI
+        </button>
+    </div>
+
+    <form method="POST" action="/add-questions">
+
+        <div id="questions-container">
+
+            <div class="question-card">
+                <h4>Question 1</h4>
+
+                <label>Question</label>
+                <input type="text" name="question[]" required>
+
+                <label>Option A</label>
+                <input type="text" name="opt1[]" required>
+
+                <label>Option B</label>
+                <input type="text" name="opt2[]" required>
+
+                <label>Option C</label>
+                <input type="text" name="opt3[]" required>
+
+                <label>Option D</label>
+                <input type="text" name="opt4[]" required>
+
+                <label>Correct Answer</label>
+                <select name="correct[]" required>
+                    <option value="">-- Select correct option --</option>
+                    <option value="1">Option A</option>
+                    <option value="2">Option B</option>
+                    <option value="3">Option C</option>
+                    <option value="4">Option D</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="actions">
+            <button type="button" class="add-btn" onclick="addQuestion()">
+                + Add Another Question
+            </button>
+            <button type="submit" class="submit-btn">
+                Submit Quiz
+            </button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+let count = 1;
+
+function addQuestion(){
+    count++;
+    const div = document.createElement('div');
+    div.classList.add('question-card');
+    div.innerHTML = `
+        <h4>Question ${count}</h4>
+        <label>Question</label>
+        <input type="text" name="question[]" required>
+        <label>Option A</label>
+        <input type="text" name="opt1[]" required>
+        <label>Option B</label>
+        <input type="text" name="opt2[]" required>
+        <label>Option C</label>
+        <input type="text" name="opt3[]" required>
+        <label>Option D</label>
+        <input type="text" name="opt4[]" required>
+        <label>Correct Answer</label>
+        <select name="correct[]" required>
+            <option value="">-- Select correct option --</option>
+            <option value="1">Option A</option>
+            <option value="2">Option B</option>
+            <option value="3">Option C</option>
+            <option value="4">Option D</option>
+        </select>`;
+    document.getElementById('questions-container').appendChild(div);
+}
+
+function generateAI(){
+  fetch("/staff/ai/generate",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      topic: document.getElementById("topic").value,
+      difficulty: document.getElementById("difficulty").value,
+      count: document.getElementById("count").value
+    })
+  })
+  .then(res=>res.json())
+  .then(data=>{
+      data.forEach(q=>{
+          addQuestion();
+          let cards = document.querySelectorAll(".question-card");
+          let last = cards[cards.length-1];
+
+          last.querySelector('input[name="question[]"]').value = q.question;
+          last.querySelector('input[name="opt1[]"]').value = q.options[0];
+          last.querySelector('input[name="opt2[]"]').value = q.options[1];
+          last.querySelector('input[name="opt3[]"]').value = q.options[2];
+          last.querySelector('input[name="opt4[]"]').value = q.options[3];
+          last.querySelector('select[name="correct[]"]').value =
+              (q.correct_index+1).toString();
+      });
+  });
+}
+</script>
+
+</body>
+</html>

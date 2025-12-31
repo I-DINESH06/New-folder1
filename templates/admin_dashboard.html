@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard | Quiz Master</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+    --bg-dark:#0F2A30;
+    --bg-mid:#1F3E46;
+    --bg-light:#2F4F57;
+    --sidebar:#243E45;
+    --card:#3E5A61;
+    --accent:#1FE1FF;
+    --accent-hover:#00C4E3;
+    --text-main:#FFFFFF;
+    --text-muted:#9FB4BA;
+    --border-soft:rgba(255,255,255,0.15);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',Tahoma,Verdana,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,var(--bg-light),var(--bg-mid),var(--bg-dark));
+    color:var(--text-main);
+    padding:40px;
+}
+
+/* NAVBAR */
+.navbar{
+    background:var(--sidebar);
+    padding:14px 24px;
+    border-radius:16px;
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:60px;
+    border:1px solid var(--border-soft);
+}
+
+.logo{
+    font-size:20px;
+    font-weight:700;
+    color:var(--accent);
+}
+
+.nav-links{
+    list-style:none;
+    display:flex;
+    gap:20px;
+}
+
+.nav-links a{
+    color:var(--text-main);
+    text-decoration:none;
+    font-weight:500;
+}
+
+.nav-links a:hover{
+    color:var(--accent);
+}
+
+/* CONTENT */
+.container{
+    max-width:1000px;
+    margin:auto;
+}
+
+h2{
+    margin-bottom:20px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:var(--card);
+    padding:25px;
+    border-radius:16px;
+    text-align:center;
+    border:1px solid var(--border-soft);
+}
+
+.card h3{
+    color:var(--text-muted);
+    margin-bottom:10px;
+}
+
+.count{
+    font-size:28px;
+    font-weight:700;
+    color:var(--accent);
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">Quiz Master — Admin</div>
+    <ul class="nav-links">
+        <li><a href="/admin/manage-staff">Manage Staff</a></li>
+        <li><a href="/admin/manage-students">Manage Students</a></li>
+        <li><a href="/admin/summary">Summary</a></li>
+        <li><a href="/logout">Logout</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <h2>Admin Dashboard</h2>
+
+    <div class="stats">
+        <div class="card">
+            <h3>Total Staff</h3>
+            <div class="count">{{ total_staff }}</div>
+        </div>
+
+        <div class="card">
+            <h3>Total Students</h3>
+            <div class="count">{{ total_students }}</div>
+        </div>
+
+        <div class="card">
+            <h3>Total Quizzes</h3>
+            <div class="count">{{ total_quizzes }}</div>
+        </div>
+
+        <div class="card">
+            <h3>Total Attempts</h3>
+            <div class="count">{{ total_attempts }}</div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Manage Students | Quiz Master</title>
+
+<style>
+body{
+    min-height:100vh;
+    background:linear-gradient(
+        135deg,
+        #2F4F57,
+        #1F3E46,
+        #0F2A30
+    );
+    color:#FFFFFF;
+    font-family:'Segoe UI';
+    padding:40px;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+}
+
+h2{
+    color:#1FE1FF;
+    margin-bottom:25px;
+}
+
+/* TABLE */
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:#3E5A61;
+    border-radius:14px;
+    overflow:hidden;
+}
+
+th,td{
+    padding:14px;
+    text-align:left;
+}
+
+th{
+    background:#2B474E;
+}
+
+tr:hover{
+    background:#2F4F57;
+}
+
+/* ACTION LINKS */
+.block{
+    color:#ef4444;
+    font-weight:600;
+    text-decoration:none;
+}
+
+.unblock{
+    color:#1FE1FF;
+    font-weight:600;
+    text-decoration:none;
+}
+
+/* BUTTON */
+.back{
+    margin-top:25px;
+    display:block;
+    width:100%;
+    text-align:center;
+    padding:14px;
+    border-radius:25px;
+    background:#1FE1FF;
+    color:#000;
+    text-decoration:none;
+    font-weight:600;
+}
+.back:hover{
+    background:#00C4E3;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Manage Students</h2>
+
+    <table>
+        <tr>
+            <th>Student ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+
+        {% for s, u in students %}
+        <tr>
+            <td>{{ u.user_id }}</td>
+            <td>{{ u.username }}</td>
+            <td>{{ u.email }}</td>
+
+            <td>
+                {% if s.flag %}
+                    <span style="color:#ef4444;font-weight:600;">Blocked</span>
+                {% else %}
+                    <span style="color:#1FE1FF;font-weight:600;">Active</span>
+                {% endif %}
+            </td>
+
+            <td>
+                {% if s.flag %}
+                    <a class="unblock" href="{{ url_for('unblock_student', student_id=s.student_id) }}">
+                        Unblock
+                    </a>
+                {% else %}
+                    <a class="block" href="{{ url_for('block_student', student_id=s.student_id) }}">
+                        Block
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="{{ url_for('staff_dashboard') }}" class="back">Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>

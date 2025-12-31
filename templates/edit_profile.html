@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Edit Profile</title>
+<style>
+body{
+    background:linear-gradient(
+        135deg,
+        #2F4F57,
+        #1F3E46,
+        #0F2A30
+    );
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    color:#FFFFFF;
+    font-family:Segoe UI;
+}
+.card{
+    background:#3E5A61;
+    padding:30px;
+    border-radius:16px;
+    width:360px;
+}
+input,button{
+    width:100%;
+    padding:12px;
+    margin-top:12px;
+    border-radius:25px;
+    border:none;
+}
+input{
+    background:#2B474E;
+    color:#FFFFFF;
+}
+input::placeholder{
+    color:#9FB4BA;
+}
+button{
+    background:#1FE1FF;
+    color:#000;
+    font-weight:600;
+    cursor:pointer;
+}
+button:hover{
+    background:#00C4E3;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Edit Profile</h2>
+
+    <form method="POST">
+        <input type="text" name="username" value="{{ user.username }}" required>
+        <input type="email" name="email" value="{{ user.email }}" required>
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <button onclick="location.href='/profile'">Cancel</button>
+</div>
+
+</body>
+</html>

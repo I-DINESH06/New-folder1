@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Staff Dashboard | Quiz Master</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',Tahoma,Verdana,sans-serif;
+}
+
+/* ===== ROOT COLORS ===== */
+:root{
+    --bg-dark:#0F2A30;
+    --bg-mid:#1F3E46;
+    --bg-light:#2F4F57;
+    --sidebar:#243E45;
+    --card:#3E5A61;
+    --accent:#1FE1FF;
+    --accent-hover:#00C4E3;
+    --text-main:#FFFFFF;
+    --text-muted:#9FB4BA;
+    --border-soft:rgba(255,255,255,0.15);
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,var(--bg-light),var(--bg-mid),var(--bg-dark));
+    color:var(--text-main);
+    padding:40px;
+}
+
+/* ===== NAV BAR ===== */
+.navbar{
+    width:100%;
+    background:var(--sidebar);
+    padding:16px 26px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:70px;
+    border:1px solid var(--border-soft);
+}
+
+.logo{
+    font-size:20px;
+    font-weight:700;
+    color:var(--accent);
+}
+
+.nav-right{
+    display:flex;
+    align-items:center;
+    gap:22px;
+}
+
+.nav-links{
+    list-style:none;
+    display:flex;
+    gap:22px;
+}
+
+.nav-links li a{
+    color:var(--text-main);
+    text-decoration:none;
+    font-weight:500;
+}
+
+.nav-links li a:hover{
+    color:var(--accent);
+}
+
+/* ===== PROFILE ===== */
+.profile-container{
+    position:relative;
+}
+
+.profile-circle{
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    background:var(--accent);
+    color:#000;
+    font-size:18px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    overflow:hidden;
+}
+
+.profile-circle img{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.profile-menu{
+    position:absolute;
+    top:60px;
+    right:0;
+    background:var(--sidebar);
+    border-radius:14px;
+    min-width:150px;
+    display:none;
+    overflow:hidden;
+    border:1px solid var(--border-soft);
+}
+
+.profile-menu a{
+    display:block;
+    padding:12px 18px;
+    color:var(--text-main);
+    text-decoration:none;
+    font-size:14px;
+}
+
+.profile-menu a:hover{
+    background:var(--card);
+}
+
+/* ===== CONTENT ===== */
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+h2{
+    margin-bottom:12px;
+    color:var(--accent);
+}
+
+.welcome-text{
+    color:var(--text-muted);
+    margin-bottom:30px;
+}
+
+.section-title{
+    margin-bottom:15px;
+    color:var(--text-muted);
+}
+
+/* SEARCH */
+.search-box{
+    width:100%;
+    padding:12px 16px;
+    border-radius:14px;
+    border:none;
+    outline:none;
+    margin-bottom:25px;
+    background:var(--card);
+    color:var(--text-main);
+}
+
+/* ===== CARDS ===== */
+.card{
+    background:var(--card);
+    padding:26px;
+    border-radius:18px;
+    margin-bottom:22px;
+    border:1px solid var(--border-soft);
+}
+
+.quiz-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.quiz-actions{
+    display:flex;
+    gap:12px;
+    margin-top:14px;
+}
+
+.btn{
+    padding:9px 16px;
+    border-radius:10px;
+    border:none;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:600;
+}
+
+/* Buttons */
+.edit-btn{
+    background:var(--accent);
+    color:#000;
+}
+
+.edit-btn:hover{
+    background:var(--accent-hover);
+}
+
+.delete-btn{
+    background:#ef4444;
+    color:#fff;
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">Quiz Master</div>
+
+    <div class="nav-right">
+        <ul class="nav-links">
+            <li><a href="/create-quiz">Create Quiz</a></li>
+            <li><a href="/student-results">Student Results</a></li>
+            <li><a href="/manage-students">Manage Students</a></li>
+            <li><a href="/staff-summary">Summary</a></li>
+        </ul>
+
+        <div class="profile-container">
+            <div class="profile-circle" onclick="toggleProfileMenu()">
+                {% if user.profile_pic %}
+                    <img src="/static/profile/{{ user.profile_pic }}">
+                {% else %}
+                    {{ session['username'][0] | upper }}
+                {% endif %}
+            </div>
+
+            <div class="profile-menu" id="profileMenu">
+                <a href="/profile">Profile</a>
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h2>Staff Dashboard</h2>
+    <h3 class="welcome-text">Welcome, {{ session['username'] }}</h3>
+
+    <h3 class="section-title">Your Uploaded Quizzes</h3>
+
+    <input type="text" id="search" class="search-box" placeholder="Search quizzes...">
+
+    {% if quizzes and quizzes|length > 0 %}
+        {% for quiz, category in quizzes %}
+            <div class="card quiz-card" data-name="{{ category.category_name|lower }}">
+                <div class="quiz-header">
+                    <strong>{{ category.category_name }}</strong>
+                    <span>Quiz ID: {{ quiz.quiz_id }}</span>
+                </div>
+
+                <div>
+                    Total Questions: {{ quiz.total_questions if quiz.total_questions else 0 }}<br>
+                    Time Limit:
+                    {{ quiz.time_limit if quiz.time_limit else quiz.total_questions }} minutes
+                </div>
+
+                <div class="quiz-actions">
+                    <button class="btn edit-btn"
+                        onclick="location.href='/edit-quiz/{{ quiz.quiz_id }}'">
+                        Edit
+                    </button>
+
+                    <button class="btn delete-btn"
+                        onclick="location.href='/delete-quiz/{{ quiz.quiz_id }}'">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No quizzes uploaded yet.</p>
+    {% endif %}
+</div>
+
+<script>
+function toggleProfileMenu(){
+    const menu = document.getElementById("profileMenu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+window.onclick = function(e){
+    if(!e.target.closest('.profile-container')){
+        document.getElementById("profileMenu").style.display = "none";
+    }
+}
+
+document.getElementById("search").addEventListener("keyup", function(){
+    let value = this.value.toLowerCase();
+    document.querySelectorAll(".quiz-card").forEach(card=>{
+        let match = card.getAttribute("data-name");
+        card.style.display = match.includes(value) ? "block" : "none";
+    });
+});
+</script>
+
+</body>
+</html>

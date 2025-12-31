@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Create Quiz | Quiz Master</title>
+
+<style>
+:root{
+    --bg-dark:#0F2A30;
+    --bg-mid:#1F3E46;
+    --bg-light:#2F4F57;
+    --card:#3E5A61;
+    --accent:#1FE1FF;
+    --accent-hover:#00C4E3;
+    --text-main:#FFFFFF;
+    --text-muted:#9FB4BA;
+}
+
+body{
+    height:100vh;
+    background:linear-gradient(135deg,var(--bg-light),var(--bg-mid),var(--bg-dark));
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:var(--text-main);
+    font-family:Segoe UI;
+}
+
+.container{
+    background:var(--card);
+    padding:40px;
+    border-radius:18px;
+    width:420px;
+}
+
+h2{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+select{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:none;
+    outline:none;
+    background:#2b474e;
+    color:var(--text-main);
+    margin-bottom:25px;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border-radius:28px;
+    border:none;
+    background:var(--accent);
+    font-weight:600;
+    cursor:pointer;
+}
+
+button:hover{
+    background:var(--accent-hover);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Create Quiz</h2>
+
+    <form method="POST">
+        <select name="category" required>
+            <option value="">-- Select Category --</option>
+            <option value="aptitude">Aptitude</option>
+            <option value="programming">Programming</option>
+            <option value="reasoning">Logical Reasoning</option>
+            <option value="web">Web Technologies</option>
+            <option value="core">Core Subjects</option>
+        </select>
+
+        <button type="submit">Continue</button>
+    </form>
+</div>
+
+</body>
+</html>

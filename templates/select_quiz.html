@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Select Quiz</title>
+<style>
+body{
+    min-height:100vh;
+    background:linear-gradient(
+        135deg,
+        #2F4F57,
+        #1F3E46,
+        #0F2A30
+    );
+    padding:40px;
+    color:#FFFFFF;
+    font-family:Segoe UI;
+}
+.card{
+    background:#3E5A61;
+    padding:20px;
+    border-radius:14px;
+    margin-bottom:15px;
+}
+a{
+    color:#1FE1FF;
+    text-decoration:none;
+    font-weight:600;
+}
+a:hover{
+    color:#00C4E3;
+}
+</style>
+</head>
+<body>
+
+<h2>Select Quiz</h2>
+
+{% for q, staff_name in quizzes %}
+<div class="card">
+    <p>Quiz ID: {{ q.quiz_id }}</p>
+
+    <!-- ⭐ NEW LINE -->
+    <p>Staff: {{ staff_name }}</p>
+
+    <p>Questions: {{ q.total_questions }}</p>
+
+    <a href="/start-test/{{ q.quiz_id }}">Start Test</a>
+</div>
+{% endfor %}
+
+</body>
+</html>

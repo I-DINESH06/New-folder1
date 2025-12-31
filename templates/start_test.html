@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test</title>
+<style>
+body{
+    background:linear-gradient(
+        135deg,
+        #2F4F57,
+        #1F3E46,
+        #0F2A30
+    );
+    color:#FFFFFF;
+    font-family:Segoe UI;
+    padding:30px;
+}
+.card{
+    background:#3E5A61;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:20px;
+}
+
+/* timer look */
+.timer{
+    text-align:right;
+    font-size:20px;
+    color:#1FE1FF;
+    margin-bottom:10px;
+}
+button{
+    background:#1FE1FF;
+    color:#000;
+    padding:12px 20px;
+    border:none;
+    border-radius:25px;
+    font-weight:600;
+    cursor:pointer;
+}
+button:hover{
+    background:#00C4E3;
+}
+</style>
+</head>
+<body>
+
+<div class="timer">
+    ⏳ Time Left: <span id="timer"></span>
+</div>
+
+<form id="quizForm" method="POST">
+
+{% for q in questions %}
+<div class="card">
+<p><b>{{ q.question_text }}</b></p>
+
+{% for opt in q.options %}
+<label>
+<input type="radio" name="{{ q.question_id }}" value="{{ opt.option_id }}">
+{{ opt.option_text }}
+</label><br>
+{% endfor %}
+
+</div>
+{% endfor %}
+
+<button type="submit">Submit Test</button>
+</form>
+
+<script>
+    // 1 question = 1 minute
+    let minutes = parseInt('{{ total_time_minutes|default(0) }}');
+    let seconds = 0;
+
+    function updateTimer(){
+        const t = document.getElementById("timer");
+
+        if(minutes === 0 && seconds === 0){
+            alert("Time is up! Your test will be submitted.");
+            document.getElementById("quizForm").submit();
+            return;
+        }
+
+        t.innerText =
+            (minutes<10?"0":"") + minutes + ":" +
+            (seconds<10?"0":"") + seconds;
+
+        if(seconds === 0){
+            minutes--;
+            seconds = 59;
+        } else{
+            seconds--;
+        }
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
+</script>
+
+</body>
+</html>

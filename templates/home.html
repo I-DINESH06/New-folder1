@@ -6,57 +6,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
-        /* 🔹 DESIGN UNCHANGED */
+        :root{
+            --bg-dark:#0F2A30;
+            --bg-mid:#1F3E46;
+            --bg-light:#2F4F57;
+            --card:#3E5A61;
+            --accent:#1FE1FF;
+            --accent-hover:#00C4E3;
+            --text-main:#FFFFFF;
+            --text-muted:#9FB4BA;
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: "Segoe UI", sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            min-height: 100vh;
-            background: radial-gradient(circle at top left, #0f2027, #203a43, #2c5364);
-            color: #ecf4f3;
-            overflow: hidden;
+            height: 100vh;
+            background: linear-gradient(120deg,
+                var(--bg-light),
+                var(--bg-mid),
+                var(--bg-dark)
+            );
+            color: var(--text-main);
         }
 
-        header {
-            position: fixed;
-            top: 20px;
-            right: 30px;
+        .navbar {
+            width: 100%;
+            padding: 20px 40px;
             display: flex;
-            gap: 15px;
-            z-index: 10;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        header a {
-            text-decoration: none;
-            padding: 10px 22px;
-            border-radius: 30px;
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .nav-buttons button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            border-radius: 25px;
+            border: none;
             font-size: 14px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s ease;
         }
 
         .login-btn {
-            border: 1px solid rgba(0,255,255,0.6);
-            color: #aefeff;
+            background: transparent;
+            color: var(--text-main);
+            border: 2px solid var(--accent);
         }
 
-        .signup-btn {
-            background: linear-gradient(135deg, #00f2fe, #4facfe);
-            color: #022c43;
-            font-weight: 600;
+        .login-btn:hover {
+            background: var(--accent);
+            color: #000;
         }
 
-        header a:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0,255,255,0.4);
+        .register-btn {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .register-btn:hover {
+            background: var(--accent-hover);
         }
 
         .hero {
-            height: 100vh;
+            height: calc(100vh - 80px);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -66,101 +90,110 @@
         }
 
         .hero h1 {
-            font-size: 64px;
-            letter-spacing: 2px;
+            font-size: 52px;
             margin-bottom: 15px;
         }
 
         .hero span {
-            color: #00f2fe;
-            text-shadow: 0 0 20px rgba(0,242,254,0.6);
+            color: var(--accent);
         }
 
         .hero p {
-            max-width: 620px;
             font-size: 18px;
-            line-height: 1.8;
-            opacity: 0.9;
-            margin-bottom: 40px;
+            max-width: 600px;
+            margin-bottom: 35px;
+            line-height: 1.6;
+            color: var(--text-muted);
         }
 
-        .cta {
-            display: flex;
-            gap: 25px;
-        }
-
-        .cta a {
-            text-decoration: none;
-            padding: 15px 42px;
-            border-radius: 50px;
+        .hero-buttons button {
+            padding: 15px 35px;
+            margin: 10px;
+            border-radius: 30px;
+            border: none;
             font-size: 16px;
             font-weight: 600;
-            transition: all 0.3s ease;
+            cursor: pointer;
+            transition: 0.3s ease;
         }
 
         .start-btn {
-            background: linear-gradient(135deg, #00f2fe, #4facfe);
-            color: #022c43;
+            background: var(--accent);
+            color: #000;
+        }
+
+        .start-btn:hover {
+            background: var(--accent-hover);
         }
 
         .learn-btn {
-            border: 2px solid #00f2fe;
-            color: #aefeff;
+            background: transparent;
+            color: var(--text-main);
+            border: 2px solid var(--accent);
         }
 
-        .cta a:hover {
-            transform: scale(1.06);
-            box-shadow: 0 15px 35px rgba(0,255,255,0.45);
+        .learn-btn:hover {
+            background: var(--accent);
+            color: #000;
         }
 
-        .circle {
+        .footer {
             position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.45;
-        }
-
-        .circle.one {
-            width: 320px;
-            height: 320px;
-            background: #00f2fe;
-            top: 10%;
-            left: 5%;
-        }
-
-        .circle.two {
-            width: 380px;
-            height: 380px;
-            background: #4facfe;
-            bottom: 10%;
-            right: 5%;
+            bottom: 15px;
+            width: 100%;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
         }
     </style>
 </head>
 <body>
 
-<div class="circle one"></div>
-<div class="circle two"></div>
+<div class="navbar">
+    <div class="logo">Quiz Master</div>
+    <div class="nav-buttons">
+        <button class="login-btn" onclick="window.location.href='/login'">Login</button>
+        <button class="register-btn" onclick="window.location.href='/register'">Register</button>
+    </div>
+</div>
 
-<header>
-    <!-- ✅ LINKS UPDATED -->
-    <a href="/login" class="login-btn">Login</a>
-    <a href="/signup" class="signup-btn">Sign Up</a>
-</header>
-
-<section class="hero">
-    <h1>Quiz <span>Master</span></h1>
+<div class="hero">
+    <h1>Challenge Your <span>Knowledge</span></h1>
     <p>
-        Challenge your knowledge with smart quizzes, real-time progress
-        tracking, and a clean interactive experience.
+        A smart quiz platform designed for students to practice aptitude,
+        technical, and logical questions with real-time progress tracking.
     </p>
 
-    <div class="cta">
-        <!-- ✅ LINK UPDATED -->
-        <a href="/login" class="start-btn">Get Started</a>
-        <a href="#" class="learn-btn">Learn More</a>
+    <div class="hero-buttons">
+        <!-- ✅ ONLY CHANGE HERE -->
+        <button class="start-btn" onclick="window.location.href='/login'">Get Started</button>
+        <button class="learn-btn" onclick="toggleSection('how')">How It Works</button>
     </div>
-</section>
+
+    <div id="explore" style="display:none; margin-top:40px; max-width:700px;"></div>
+
+    <div id="how" style="display:none; margin-top:40px; max-width:700px;">
+        <h2>How Quiz Master Works</h2>
+        <ol style="text-align:left; margin-top:15px; line-height:1.8;">
+            <li>Register or login to your account</li>
+            <li>Select a quiz category and difficulty</li>
+            <li>Answer timed multiple-choice questions</li>
+            <li>Get instant score and performance analysis</li>
+            <li>Track progress from your dashboard</li>
+        </ol>
+    </div>
+</div>
+
+<div class="footer">
+    © 2025 Quiz Master | Learn • Practice • Succeed
+</div>
+
+<script>
+function toggleSection(section){
+    const how=document.getElementById('how');
+    how.style.display = how.style.display === 'block' ? 'none' : 'block';
+}
+</script>
 
 </body>
 </html>

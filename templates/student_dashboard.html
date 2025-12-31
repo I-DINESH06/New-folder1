@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Dashboard | Quiz Master</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',Tahoma,Verdana,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#2F4F57,#1F3E46,#0F2A30);
+    color:#FFFFFF;
+    padding:40px;
+}
+
+/* ===== NAV BAR ===== */
+.navbar{
+    width:100%;
+    background:#243E45;
+    padding:14px 24px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:60px;
+    gap:16px;
+}
+
+.logo{
+    font-size:20px;
+    font-weight:700;
+    color:#1FE1FF;
+}
+
+.nav-right{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.nav-links{
+    list-style:none;
+    display:flex;
+    gap:20px;
+}
+
+.nav-links li a{
+    color:#FFFFFF;
+    text-decoration:none;
+    font-weight:500;
+}
+
+.nav-links li a:hover{
+    color:#1FE1FF;
+}
+
+/* ===== PROFILE ===== */
+.profile-container{
+    position:relative;
+}
+
+.profile-circle{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:#1FE1FF;
+    color:#000;
+    font-size:18px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    overflow:hidden;
+}
+
+.profile-circle img{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.profile-menu{
+    position:absolute;
+    top:55px;
+    right:0;
+    background:#3E5A61;
+    border-radius:12px;
+    min-width:140px;
+    display:none;
+    box-shadow:0 8px 20px rgba(0,0,0,0.35);
+    z-index:10;
+}
+
+.profile-menu a{
+    display:block;
+    padding:12px 16px;
+    color:#FFFFFF;
+    text-decoration:none;
+    font-size:14px;
+}
+
+.profile-menu a:hover{
+    background:#2B474E;
+}
+
+/* ===== CONTENT ===== */
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+h2{
+    margin-bottom:20px;
+    color:#1FE1FF;
+}
+
+.section-title{
+    margin-top:30px;
+    margin-bottom:10px;
+    color:#9FB4BA;
+}
+
+/* ===== QUIZ CARD ===== */
+.card{
+    background:#3E5A61;
+    padding:18px 20px;
+    border-radius:14px;
+    margin-bottom:14px;
+    cursor:pointer;
+}
+
+.card:hover{
+    background:#2B474E;
+}
+
+/* Badge */
+.badge{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:10px;
+    font-size:12px;
+    margin-top:6px;
+}
+
+.badge-available{
+    background:#1FE1FF;
+    color:#000;
+}
+
+.badge-completed{
+    background:#facc15;
+    color:#000;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV BAR -->
+<nav class="navbar">
+    <div class="logo">Quiz Master</div>
+
+    <div class="nav-right">
+        <ul class="nav-links">
+
+            {% if student.flag %}
+                <li><a style="opacity:.4; cursor:not-allowed;">Take Test (Blocked)</a></li>
+            {% else %}
+                <li><a href="/take-test">Take Test</a></li>
+            {% endif %}
+
+            <li><a href="/my-results">My Results</a></li>
+            <li><a href="/student-summary">Summary</a></li>
+        </ul>
+
+        <div class="profile-container">
+            <div class="profile-circle" onclick="toggleProfileMenu()">
+                {% if user.profile_pic %}
+                    <img src="/static/profile/{{ user.profile_pic }}">
+                {% else %}
+                    {{ session['username'][0] | upper }}
+                {% endif %}
+            </div>
+
+            <div class="profile-menu" id="profileMenu">
+                <a href="/profile">Profile</a>
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h2>Student Dashboard</h2>
+
+    <h3 class="welcome-text">Welcome, {{ session['username'] }}</h3>
+
+    <h3 class="section-title">Available Quizzes</h3>
+
+    {% if quizzes and quizzes|length > 0 %}
+        {% for quiz, category, status, total_questions in quizzes %}
+            <div class="card"
+                 {% if not student.flag and status == 'available' %}
+                    onclick="location.href='/take-test/{{ quiz.quiz_id }}'"
+                 {% else %}
+                    style="cursor:not-allowed; opacity:0.6;"
+                 {% endif %}
+            >
+                <strong>{{ category.category_name }}</strong><br>
+
+                Total Questions: {{ total_questions }}<br>
+
+                Time Limit:
+                {{ total_questions }} minute{% if total_questions != 1 %}s{% endif %}<br>
+
+                {% if status == 'completed' %}
+                    <span class="badge badge-completed">Completed</span>
+                {% else %}
+                    <a class="badge badge-available" href="{{ url_for('take_test') }}">
+                        Available
+                    </a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No quizzes available right now.</p>
+    {% endif %}
+</div>
+
+<script>
+function toggleProfileMenu(){
+    const menu=document.getElementById("profileMenu");
+    menu.style.display = (menu.style.display==="block")?"none":"block";
+}
+
+window.onclick=function(e){
+    if(!e.target.closest('.profile-container')){
+        document.getElementById("profileMenu").style.display="none";
+    }
+}
+</script>
+
+</body>
+</html>
